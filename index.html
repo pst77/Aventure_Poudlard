@@ -1,11 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Test Final</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aventure à Poudlard</title>
+    <style>
+        body { font-family: Georgia, serif; background-color: #05070d; color: #f8e6bc; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        #game-ui { max-width: 600px; width: 100%; }
+        button { display: block; width: 100%; margin: 10px 0; padding: 15px; background: #2a2a2a; border: 1px solid #f8e6bc; color: #f8e6bc; cursor: pointer; text-align: left; }
+        button:hover { background: #4a4a4a; }
+    </style>
 </head>
 <body>
-    <h1>Ça fonctionne !</h1>
-    <p>Si vous voyez ce message, c'est que le fichier est bien lu par GitHub Pages.</p>
+    <div id="game-ui">
+        <div id="story-text"></div>
+        <div id="options-buttons"></div>
+    </div>
+
+    <script>
+        const story = {
+            start: {
+                text: "Tu te trouves devant la porte scellée de la salle commune. Un parchemin indique : 'Pour entrer, résous cette énigme : Si $x^2 - 7x + 10 = 0$, quelle est la somme des racines ?'",
+                options: [
+                    { text: "A) 7", next: "success" },
+                    { text: "B) 5", next: "fail" },
+                    { text: "C) 10", next: "fail" }
+                ]
+            },
+            success: { text: "La porte s'ouvre lentement. Bien joué.", options: [] },
+            fail: { text: "Rien ne se passe. Tu es bloqué.", options: [] }
+        };
+
+        function showScene(sceneKey) {
+            const scene = story[sceneKey];
+            document.getElementById('story-text').innerText = scene.text;
+            const container = document.getElementById('options-buttons');
+            container.innerHTML = '';
+            scene.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.innerText = opt.text;
+                btn.onclick = () => showScene(opt.next);
+                container.appendChild(btn);
+            });
+        }
+        showScene('start');
+    </script>
 </body>
 </html>
